@@ -1,0 +1,37 @@
+{
+    "manifest_version": 3,
+    "name": "Facebook Friend Add",
+    "version": "1.0",
+    "description": "Una extensión para obtener el DOM de la página de Facebook.",
+    "permissions": [
+        "tabs",
+        "activeTab","storage","scripting"
+    ],
+    "minimum_chrome_version": "102",
+    "host_permissions": [
+        "*://*.facebook.com/*",
+        "*://*.vidasana.wiki/*"
+      ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*.facebook.com/*",
+                "*://*.vidasana.wiki/*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "images/icon16.png",
+            "48": "images/icon48.png",
+            "128": "images/icon128.png"
+          }
+      }
+}
