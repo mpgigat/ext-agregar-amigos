@@ -28,7 +28,7 @@ const seleccionarMensajeAleatorio = async (nombre) => {
             let mensaje = listadoMensajes[indiceAleatorio]
             if (mensaje.includes("{{nombre}}")) {
                 var primerNombre = nombre.split(' ')[0];
-                if (primerNombre.length>0) mensaje = mensaje.replace('{{nombre}}', primerNombre);
+                if (primerNombre.length > 0) mensaje = mensaje.replace('{{nombre}}', primerNombre);
             }
             return mensaje
         }
@@ -55,25 +55,17 @@ setTimeout(async () => {
             let mensaje = await seleccionarMensajeAleatorio(response.nombrePerfil)
             textarea.value = mensaje
             var botonEnviar = document.querySelector('button[value="Enviar"]');
-            // botonEnviar.click();
+            botonEnviar.click();
             var tabId = response.tabId;
-            console.log("ID de la pestaña actual desde back:", tabId);
+     
             setTimeout(async () => {
-                // await chrome.storage.session.set({ 'saludoEnviado': tabId }, function () {
-                //     console.log('Valor almacenado en saludo');
-                // });
-                chrome.runtime.sendMessage({ action: "closeTab",tabId}, function (response) {
+                chrome.runtime.sendMessage({ action: "closeTab", tabId }, function (response) {
                     console.log('Orden de cierre enviada');
-        
+
                 });
             }, 5000);
 
         });
-
-
-
-
-
     }
 
 }, 10000);

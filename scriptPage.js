@@ -84,34 +84,29 @@ const hacerClicAgregar = async (child) => {
             const profileLink = child.querySelector('a[href*="/groups/"][href*="/user/"]');
             const userId = profileLink ? profileLink.getAttribute('href').match(/\/user\/(\d+)\//)[1] : null;
 
-            // await chrome.storage.session.set({ 'enviarSaludo': userId }, function () {
-            //     console.log(`Valor almacenado. ${userId}`);
-            // });
             chrome.runtime.sendMessage({ action: "openTab",nombrePerfil:nombre ,idPerfil:userId}, function (response) {
                 var tabId = response.nuevoTabSaludoId;
                 console.log("ID de la pestaña abierta desde back:", tabId);
     
             });
 
-            console.log("userId", userId);
+            // console.log("userId", userId);
             conteoInvitacionesDiarias++;
 
-            const timestamp = Date.now();
-            const fecha = new Date(timestamp);
-            const año = fecha.getFullYear();
-            const mes = fecha.getMonth() + 1; // Los meses van de 0 a 11, por lo que se suma 1
-            const dia = fecha.getDate();
-            const hora = fecha.getHours();
-            const minutos = fecha.getMinutes();
-            const segundos = fecha.getSeconds();
+            // const timestamp = Date.now();
+            // const fecha = new Date(timestamp);
+            // const año = fecha.getFullYear();
+            // const mes = fecha.getMonth() + 1; // Los meses van de 0 a 11, por lo que se suma 1
+            // const dia = fecha.getDate();
+            // const hora = fecha.getHours();
+            // const minutos = fecha.getMinutes();
+            // const segundos = fecha.getSeconds();
 
             // Formatear la salida en un formato legible
-            const fechaLegible = `${dia}/${mes}/${año} ${hora}:${minutos}:${segundos}`;
+            // const fechaLegible = `${dia}/${mes}/${año} ${hora}:${minutos}:${segundos}`;
 
-
-
-            console.log('Invitacion agregada', nombre, fechaLegible);
-            // addButton.click();
+            // //console.log('Invitacion agregada', nombre, fechaLegible);
+            addButton.click();
             return true
         }
         return false
@@ -123,7 +118,6 @@ const hacerClicAgregar = async (child) => {
 }
 
 const ejecutarConRetraso = async (data, index) => {
-    // Verificar si se han completado todas las iteraciones
     const item = await chrome.storage.sync.get('activate')
     if (!item.activate) return
     if (index >= data.length - 1) {
@@ -135,11 +129,10 @@ const ejecutarConRetraso = async (data, index) => {
         return;
     }
 
-    // Generar un tiempo de espera aleatorio entre 1 y 5 segundos
     const tiempo = await chrome.storage.sync.get('minutes')
     const minutos = tiempo.minutes || 3
 
-    const minutosAleatorios = (Math.floor(Math.random() * (minutos + 1 - minutos)) + minutos) * 60000;
+    const minutosAleatorios = (Math.floor(Math.random() * 3) + minutos)*60000;
     const segundosAleatorios = (Math.floor(Math.random() * 59) + 1) * 1000;
 
     var tiempoAleatorio = minutosAleatorios + segundosAleatorios; // Entre 1000 y 6000 milisegundos
@@ -192,7 +185,7 @@ const ejecutarConRetraso = async (data, index) => {
         }
 
         ejecutarConRetraso(data, index + 1);
-    }, 30000);
+    }, tiempoAleatorio);
 }
 
 const ejecutarScript = async () => {
@@ -204,19 +197,14 @@ const ejecutarScript = async () => {
     enabledKeywords = keyActivate.enableKeywords || false
 
     const keyKeywordsTags = await chrome.storage.sync.get('keywords')
-    console.log("paso2");
     if (keyKeywordsTags.keywords === undefined || keyKeywordsTags.keywords === "") {
         keywordsTags = []; // 
         enabledKeywords = false
     } else if (keyKeywordsTags.keywords.includes(",")) {
-        console.log("paso3");
         keywordsTags = keyKeywordsTags.keywords.split(",").map(item => item.trim());  // Dividir la cadena en un array utilizando la coma como separador
     } else {
         keywordsTags = [keyKeywordsTags.keywords]; // Si la cadena no contiene comas, el array tendrá un solo elemento que es la cadena completa
     }
-
-
-    console.log("keywordsTags", keywordsTags, enabledKeywords);
 
     scrollDownUntil(async (estado) => {
         if (estado) {
@@ -242,6 +230,6 @@ let enabledKeywords;
 let keywordsTags;
 
 let conteoInvitacionesDiarias = 0
-const velocidadCargaUsuarios = 10000
+const velocidadCargaUsuarios = 20000
 ejecutarScript()
 

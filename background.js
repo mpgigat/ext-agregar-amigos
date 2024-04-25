@@ -47,7 +47,7 @@ const tareaDiaria = (tabId) => {
                     }
 
                     chrome.scripting.executeScript({
-                        target: { tabId: currentTabId },
+                        target: { tabId: currentTabId }, 
                         files: ['scriptPage.js']
                     }).then((result) => {
                         if (chrome.runtime.lastError) {
@@ -157,59 +157,3 @@ chrome.runtime.onMessage.addListener(async function (message, sender, sendRespon
         }
     }
 });
-
-
-
-
-// chrome.storage.session.setAccessLevel({ accessLevel: 'TRUSTED_AND_UNTRUSTED_CONTEXTS' });
-// chrome.storage.session.onChanged.addListener(async function (changes) {
-
-//     if (changes.hasOwnProperty('enviarSaludo')) {
-//         if (changes['enviarSaludo'].newValue != "") {
-//             console.log("Hubo un cambio hay que abrir");
-//             const urlSaludo = `https://m.facebook.com/messages/thread/${changes['enviarSaludo'].newValue}`
-//             // const urlSaludo = `https://m.facebook.com/messages/thread/61552262345283`
-//             chrome.tabs.create({ url: urlSaludo }, function (tab) {
-//                 nuevoTabSaludoId = tab.id;
-//                 nuevoTabPerfilId = changes['enviarSaludo'].newValue;
-//                 console.log(`La pestaña para ${changes['enviarSaludo'].newValue} se creó con el ID: ` + nuevoTabSaludoId);
-
-//                 chrome.tabs.onUpdated.addListener(function onTabUpdated(nuevoTabSaludoId, changeInfo, tab) {
-
-//                     if (changeInfo.status === 'complete') {
-//                         chrome.tabs.onUpdated.removeListener(onTabUpdated);  // Remueve el listener para evitar llamadas múltiples
-
-//                         if (chrome.runtime.lastError) {
-//                             console.error('Runtime Error:', chrome.runtime.lastError);
-//                             return;
-//                         }
-
-//                         chrome.scripting.executeScript({
-//                             target: { tabId: nuevoTabSaludoId },
-//                             files: ['scriptSaludo.js']
-//                         }).then((result) => {
-//                             if (chrome.runtime.lastError) {
-//                                 console.error('Error ejecutando script Saludo:', chrome.runtime.lastError);
-//                                 return;
-//                             }
-//                             console.log("Ejecutando script Saludo");
-//                         }).catch(error => {
-//                             console.error("Error durante la ejecución del script Saludo: ", error);
-//                         });
-//                     }
-//                 });
-
-//             });
-//         }
-
-//     } else if (changes.hasOwnProperty('saludoEnviado')) {
-//         console.log("Hubo un cambio hay que cerrar");
-//         if (changes['saludoEnviado'].newValue == nuevoTabSaludoId) {
-//             console.log("valide que es cerrar", nuevoTabSaludoId);
-//             chrome.tabs.remove(nuevoTabSaludoId, async function () {
-//                 console.log("Cerrando pestaña ", nuevoTabSaludoId);
-
-//             });
-//         }
-//     }
-// });
